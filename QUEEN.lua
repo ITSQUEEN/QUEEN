@@ -828,7 +828,7 @@ send(msg.chat_id_, msg.id_,'📫¦ تم حذف كليشه ستارت')
 end
 if text == 'تحديث السورس ™' and SudoBot(msg) then 
 os.execute('rm -rf QUEEN.lua')
-os.execute('wget https://raw.githubusercontent.com/QUEENBO/QUEEN/master/QUEEN.lua')
+os.execute('wget https://raw.githubusercontent.com/ITSQUEEN/QUEEN/master/QUEEN.lua')
 send(msg.chat_id_, msg.id_,'♻¦ تم تحديث السورس') 
 dofile('QUEEN.lua')  
 end
@@ -1996,7 +1996,7 @@ end
 return false
 end
 os.execute('rm -rf QUEEN.lua')
-os.execute('wget https://raw.githubusercontent.com/QUEENBO/QUEEN/master/QUEEN.lua')
+os.execute('wget https://raw.githubusercontent.com/ITSQUEEN/QUEEN/master/QUEEN.lua')
 send(msg.chat_id_, msg.id_,'♻¦ تم تحديث السورس') 
 dofile('QUEEN.lua')  
 end
