@@ -9250,18 +9250,89 @@ if data.username_ then
 database:set(bot_id..'user:Name'..msg.sender_user_id_,(data.username_))
 end
 --------------------------------------------------------------------------------------------------------------
+if tonumber(data.id_) == tonumber(bot_id) then
+return false
+end
+local Get_Re_Name = database:get(bot_id.."Chen:Name"..msg.sender_user_id_) 
+if Get_Re_Name then 
+if Get_Re_Name ~= data.first_name_ then 
+tahan = '['..(Get_Re_Name or '')..']'
+taham = '['..data.first_name_..']'
+local taha ={ 
+'\n شكو غيرت اسمك  يا حلو 😹🌚',
+'\n شهل اسم الفيطي '..taham.. ' \n رجعه ؏ قديم \n '..tahan..'',
+'\n  ها ها شو غيرت اسمك 🤔😹',
+'\n شكو غيرت اسمك شنو قطيت وحده جديده 😹😹🌚',
+'\n شو غيرت اسمك شنو تعاركت ويه الحب ؟😹🌞',
+'\n ها ولك مو جان  اسمك   '..tahan..'  شكو غيرته ',
+'\n شكو غيرت اسمك شسالفه ؟؟ 🤔🌞'
+}
+send(msg.chat_id_,msg.id_,taha[math.random(#taha)])
+database:set(bot_id.."Chen:Name"..msg.sender_user_id_, data.first_name_) 
+return false
+end  
+end
+--------------------------------------------------------------------------------------------------------------
+local Getredis = database:get(bot_id.."Chen:User:Name"..msg.sender_user_id_)
+if data.username_ then  
+if Getredis and Getredis ~= data.username_ then 
+tahan = '['..(database:get(bot_id.."Chen:User:Name"..msg.sender_user_id_) or '')..']'
+local taha ={ 
+'\n شكو غيرت معرفك  يا حلو 😹🌚',
+'\n  ها ها شو غيرت معرفك 🤔😹',
+'\n شكو غيرت معرفك شنو قطيت وحده جديده 😹😹🌚',
+'\n شو غيرت معرفك شنو تعاركت ويه الحب ؟😹🌞',
+'\n ها ولك مو جان  معرفك   '..tahan..'  شكو غيرته ',
+'\n شكو غيرت معرفك شسالفه ؟؟ 🤔🌞'
+}
+send(msg.chat_id_,msg.id_,taha[math.random(#taha)])
+database:set(bot_id.."Chen:User:Name"..msg.sender_user_id_, data.username_) 
+return false
+end
+end
+--------------------------------------------------------------------------------------------------------------
+local Getredis = database:get(bot_id.."Chen:Photo"..msg.sender_user_id_)
+if data.profile_photo_ then  
+if Getredis and Getredis ~= data.profile_photo_.id_ then 
+local taha ={ 
+'\n شكو غيرت صورتك  يا حلو 😹🌚',
+'\n  ها ها شو غيرت صورتك 🤔😹',
+'\n شكو غيرت صورتك شنو قطيت وحده جديده 😹😹🌚',
+'\n شو غيرت صورتك شنو تعاركت ويه الحب ؟😹🌞',
+'\n شكو غيرت صورتك شسالفه ؟؟ 🤔🌞'
+}
+send(msg.chat_id_,msg.id_,taha[math.random(#taha)])
+database:set(bot_id.."Chen:Photo"..msg.sender_user_id_, data.profile_photo_.id_) 
+return false
+end
+end
+end,nil)   
+end
 elseif (data.ID == "UpdateMessageEdited") then
 local msg = data
 tdcli_function ({ID = "GetMessage",chat_id_ = msg.chat_id_,message_id_ = tonumber(msg.message_id_)},function(extra, result, success)
 database:incr(bot_id..'edits'..result.chat_id_..result.sender_user_id_)
 local Text = result.content_.text_
-if database:get(bot_id.."lock:edit"..msg.chat_id_) and not Text and not BasicConstructor(result) then
+if database:get(bot_id.."lock_edit_med"..msg.chat_id_) and not Text and not BasicConstructor(result) then
 tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
 local username = data.username_
 local name = data.first_name_
 local iduser = data.id_
 local users = ('[@'..data.username_..']' or iduser)
-send(msg.chat_id_,0,'⚠¦ تم التعديل على الميديا \n\n📌¦ الشخص الي قام بالتعديل\n➺➺➺ •⊱{ '..users..' }⊰•') 
+local list = database:smembers(bot_id..'Mod:User'..msg.chat_id_)
+t = "\n🚫┋ عضو ما يحاول تعديل الميديا \n"
+for k,v in pairs(list) do
+local username = database:get(bot_id.."user:Name" .. v)
+if username then
+t = t..""..k.."- ([@"..username.."])\n"
+else
+t = t..""..k.."- (`"..v.."`)\n"
+end
+end
+if #list == 0 then
+t = "☑️┋ لا يوجد ادمن"
+end
+send(msg.chat_id_,0,''..t..'\n┉  ┉  ┉  ┉  ┉  ┉  ┉  ┉ٴ\n⚠️┋ تم التعديل على الميديا\n📌┋ العضو الي قام بالتعديل\n📮┋ ايدي العضو ← `'..result.sender_user_id_..'`\n⛔┋ معرف العضو←{ '..users..' }') 
 end,nil)
 DeleteMessage(msg.chat_id_,{[0] = msg.message_id_}) 
 end
